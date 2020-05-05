@@ -423,8 +423,9 @@ export default class Project extends EventEmitter {
     }
 
     const {
-      file_id: thumbnail_file_id,
-      meta: { access_token: thumbnail_file_token }
+      // file_id: thumbnail_file_id,
+      owned_file_id: thumbnail_file_id
+      // meta: { access_token: thumbnail_file_token }
     } = await this.upload(thumbnailBlob, undefined, signal);
 
     if (signal.aborted) {
@@ -434,8 +435,8 @@ export default class Project extends EventEmitter {
     const serializedScene = scene.serialize();
     const projectBlob = new Blob([JSON.stringify(serializedScene)], { type: "application/json" });
     const {
-      file_id: project_file_id,
-      meta: { access_token: project_file_token }
+      owned_file_id: project_file_id
+      // meta: { access_token: project_file_token }
     } = await this.upload(projectBlob, undefined, signal);
 
     if (signal.aborted) {
@@ -452,9 +453,9 @@ export default class Project extends EventEmitter {
     const project = {
       name: scene.name,
       thumbnail_file_id,
-      thumbnail_file_token,
-      project_file_id,
-      project_file_token
+      // thumbnail_file_token,
+      project_file_id
+      // project_file_token
     };
 
     if (parentSceneId) {
@@ -463,7 +464,8 @@ export default class Project extends EventEmitter {
 
     const body = JSON.stringify({ project });
 
-    const projectEndpoint = `https://${RETICULUM_SERVER}/api/v1/projects`;
+    // const projectEndpoint = `https://${RETICULUM_SERVER}/api/v1/projects`;
+    const projectEndpoint = `http://localhost:3030/project`;
 
     const resp = await this.fetch(projectEndpoint, { method: "POST", headers, body, signal });
 
@@ -550,8 +552,8 @@ export default class Project extends EventEmitter {
     }
 
     const {
-      file_id: thumbnail_file_id,
-      meta: { access_token: thumbnail_file_token }
+      owned_file_id: thumbnail_file_id
+      // meta: { access_token: thumbnail_file_token }
     } = await this.upload(thumbnailBlob, undefined, signal);
 
     if (signal.aborted) {
@@ -561,8 +563,8 @@ export default class Project extends EventEmitter {
     const serializedScene = editor.scene.serialize();
     const projectBlob = new Blob([JSON.stringify(serializedScene)], { type: "application/json" });
     const {
-      file_id: project_file_id,
-      meta: { access_token: project_file_token }
+      owned_file_id: project_file_id
+      // meta: { access_token: project_file_token }
     } = await this.upload(projectBlob, undefined, signal);
 
     if (signal.aborted) {
@@ -579,9 +581,9 @@ export default class Project extends EventEmitter {
     const project = {
       name: editor.scene.name,
       thumbnail_file_id,
-      thumbnail_file_token,
-      project_file_id,
-      project_file_token
+      // thumbnail_file_token,
+      project_file_id
+      // project_file_token
     };
 
     const sceneId = editor.scene.metadata && editor.scene.metadata.sceneId ? editor.scene.metadata.sceneId : null;
@@ -808,8 +810,8 @@ export default class Project extends EventEmitter {
 
       // Upload the screenshot file
       const {
-        file_id: screenshotId,
-        meta: { access_token: screenshotToken }
+        owned_file_id: screenshotId
+        // meta: { access_token: screenshotToken }
       } = await this.upload(screenshotBlob, undefined, abortController.signal);
 
       if (signal.aborted) {
@@ -819,8 +821,8 @@ export default class Project extends EventEmitter {
       }
 
       const {
-        file_id: glbId,
-        meta: { access_token: glbToken }
+        owned_file_id: glbId
+        // meta: { access_token: glbToken }
       } = await this.upload(glbBlob, uploadProgress => {
         showDialog(
           ProgressDialog,
@@ -842,8 +844,8 @@ export default class Project extends EventEmitter {
       }
 
       const {
-        file_id: sceneFileId,
-        meta: { access_token: sceneFileToken }
+        owned_file_id: sceneFileId
+        // meta: { access_token: sceneFileToken }
       } = await this.upload(sceneBlob, undefined, abortController.signal);
 
       if (signal.aborted) {
@@ -854,11 +856,11 @@ export default class Project extends EventEmitter {
 
       const sceneParams = {
         screenshot_file_id: screenshotId,
-        screenshot_file_token: screenshotToken,
+        // screenshot_file_token: screenshotToken,
         model_file_id: glbId,
-        model_file_token: glbToken,
+        // model_file_token: glbToken,
         scene_file_id: sceneFileId,
-        scene_file_token: sceneFileToken,
+        // scene_file_token: sceneFileToken,
         allow_remixing: publishParams.allowRemixing,
         allow_promotion: publishParams.allowPromotion,
         name: publishParams.name,
@@ -876,7 +878,8 @@ export default class Project extends EventEmitter {
       };
       const body = JSON.stringify({ scene: sceneParams });
 
-      const resp = await this.fetch(`https://${RETICULUM_SERVER}/api/v1/projects/${project.project_id}/publish`, {
+      // const resp = await this.fetch(`https://${RETICULUM_SERVER}/api/v1/project/${project.project_id}/publish`, {
+      const resp = await this.fetch(`http://localhost:3030/project/${project.project_id}/publish`, {
         method: "POST",
         headers,
         body
@@ -929,8 +932,8 @@ export default class Project extends EventEmitter {
 
   async upload(blob, onUploadProgress, signal) {
     // Use direct upload API, see: https://github.com/mozilla/reticulum/pull/319
-    const { phx_host: uploadHost } = await (await this.fetch(`https://${RETICULUM_SERVER}/api/v1/meta`)).json();
-    const uploadPort = new URL(`https://${RETICULUM_SERVER}`).port;
+    // const { phx_host: uploadHost } = await (await this.fetch(`https://${RETICULUM_SERVER}/api/v1/meta`)).json();
+    // const uploadPort = new URL(`https://${RETICULUM_SERVER}`).port;
 
     return await new Promise((resolve, reject) => {
       const request = new XMLHttpRequest();
@@ -947,7 +950,8 @@ export default class Project extends EventEmitter {
         signal.addEventListener("abort", onAbort);
       }
 
-      request.open("post", `https://${uploadHost}:${uploadPort}/api/v1/media`, true);
+      request.open("post", `http://localhost:3030/media`, true);
+      // request.open("post", `https://${uploadHost}:${uploadPort}/api/v1/media`, true);
 
       request.upload.addEventListener("progress", e => {
         if (onUploadProgress) {
@@ -976,7 +980,8 @@ export default class Project extends EventEmitter {
       });
 
       const formData = new FormData();
-      formData.set("media", blob);
+      // formData.set("media", blob);
+      formData.set("file", blob);
 
       request.send(formData);
     });
@@ -1042,13 +1047,13 @@ export default class Project extends EventEmitter {
 
       const response = await this.upload(thumbnailBlob, undefined, signal);
 
-      thumbnail_file_id = response.file_id;
+      thumbnail_file_id = response.owned_file_id;
       thumbnail_access_token = response.meta.access_token;
     }
 
     const {
-      file_id: asset_file_id,
-      meta: { access_token: asset_access_token }
+      owned_file_id: asset_file_id
+      // meta: { access_token: asset_access_token }
     } = await this.upload(file, onProgress, signal);
 
     const delta = Date.now() - this.lastUploadAssetRequest;
@@ -1067,8 +1072,8 @@ export default class Project extends EventEmitter {
     const body = JSON.stringify({
       asset: {
         name: file.name,
-        file_id: asset_file_id,
-        access_token: asset_access_token,
+        owned_file_id: asset_file_id,
+        // access_token: asset_access_token,
         thumbnail_file_id,
         thumbnail_access_token
       }
