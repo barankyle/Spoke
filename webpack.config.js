@@ -91,7 +91,7 @@ module.exports = env => {
       headers: {
         "Access-Control-Allow-Origin": "*"
       },
-      before: function(app) {
+      before: function (app) {
         // be flexible with people accessing via a local reticulum on another port
         app.use(cors({ origin: /hubs\.local(:\d*)?$/ }));
       }
@@ -255,6 +255,7 @@ module.exports = env => {
         BUILD_VERSION: "dev",
         NODE_ENV: "development",
         RETICULUM_SERVER: undefined,
+        XRCHAT_SERVER: undefined,
         THUMBNAIL_SERVER: "",
         HUBS_SERVER: undefined,
         CORS_PROXY_SERVER: null,

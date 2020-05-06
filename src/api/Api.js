@@ -18,6 +18,7 @@ import { RethrownError } from "../editor/utils/errors";
 const resolveUrlCache = new Map();
 
 const RETICULUM_SERVER = configs.RETICULUM_SERVER || document.location.hostname;
+const XRCHAT_SERVER = configs.XRCHAT_SERVER || document.location.hostname;
 
 // thanks to https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
 function b64EncodeUnicode(str) {
@@ -198,7 +199,8 @@ export default class Project extends EventEmitter {
       authorization: `Bearer ${token}`
     };
 
-    const response = await this.fetch(`https://${RETICULUM_SERVER}/api/v1/projects`, { headers });
+    const response = await this.fetch(`http://${XRCHAT_SERVER}/project`, { headers });
+    // const response = await this.fetch(`https://${XRCHAT_SERVER}/api/v1/projects`, { headers });
 
     const json = await response.json();
 
@@ -217,7 +219,7 @@ export default class Project extends EventEmitter {
       authorization: `Bearer ${token}`
     };
 
-    const response = await this.fetch(`https://${RETICULUM_SERVER}/api/v1/projects/${projectId}`, {
+    const response = await this.fetch(`http://${XRCHAT_SERVER}/project/${projectId}`, {
       headers
     });
 
@@ -336,7 +338,7 @@ export default class Project extends EventEmitter {
   }
 
   async searchMedia(source, params, cursor, signal) {
-    const url = new URL(`https://${RETICULUM_SERVER}/api/v1/media/search`);
+    const url = new URL(`http://${XRCHAT_SERVER}/media/search`);
 
     const headers = {
       "content-type": "application/json"
@@ -464,8 +466,7 @@ export default class Project extends EventEmitter {
 
     const body = JSON.stringify({ project });
 
-    // const projectEndpoint = `https://${RETICULUM_SERVER}/api/v1/projects`;
-    const projectEndpoint = `http://localhost:3030/project`;
+    const projectEndpoint = `http://${XRCHAT_SERVER}/project`;
 
     const resp = await this.fetch(projectEndpoint, { method: "POST", headers, body, signal });
 
@@ -878,8 +879,7 @@ export default class Project extends EventEmitter {
       };
       const body = JSON.stringify({ scene: sceneParams });
 
-      // const resp = await this.fetch(`https://${RETICULUM_SERVER}/api/v1/project/${project.project_id}/publish`, {
-      const resp = await this.fetch(`http://localhost:3030/project/${project.project_id}/publish`, {
+      const resp = await this.fetch(`http://${XRCHAT_SERVER}/project/${project.project_id}/publish`, {
         method: "POST",
         headers,
         body
@@ -950,7 +950,7 @@ export default class Project extends EventEmitter {
         signal.addEventListener("abort", onAbort);
       }
 
-      request.open("post", `http://localhost:3030/media`, true);
+      request.open("post", `http://${XRCHAT_SERVER}/media`, true);
       // request.open("post", `https://${uploadHost}:${uploadPort}/api/v1/media`, true);
 
       request.upload.addEventListener("progress", e => {
