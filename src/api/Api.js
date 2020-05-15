@@ -475,7 +475,8 @@ export default class Project extends EventEmitter {
       name: scene.name,
       thumbnail_file_id,
       // thumbnail_file_token,
-      project_file_id
+      project_file_id,
+      projectJson: serializedScene
       // project_file_token
     };
 
@@ -599,6 +600,7 @@ export default class Project extends EventEmitter {
     };
 
     const project = {
+      projectJson: serializedScene,
       name: editor.scene.name,
       thumbnail_file_id,
       // thumbnail_file_token,
@@ -616,7 +618,8 @@ export default class Project extends EventEmitter {
       project
     });
 
-    const projectEndpoint = `https://${RETICULUM_SERVER}/api/v1/projects/${projectId}`;
+    // const projectEndpoint = `https://${RETICULUM_SERVER}/api/v1/projects/${projectId}`;
+    const projectEndpoint = `http://${XRCHAT_SERVER}/project/${projectId}`;
 
     const resp = await this.fetch(projectEndpoint, { method: "PATCH", headers, body, signal });
 
@@ -956,7 +959,6 @@ export default class Project extends EventEmitter {
 
     return await new Promise((resolve, reject) => {
       const request = new XMLHttpRequest();
-
       const onAbort = () => {
         request.abort();
         const error = new Error("Upload aborted");
