@@ -20,6 +20,13 @@ const resolveUrlCache = new Map();
 const RETICULUM_SERVER = configs.RETICULUM_SERVER || document.location.hostname;
 const XRCHAT_SERVER = configs.XRCHAT_SERVER || document.location.hostname;
 
+//initializing BLOCK_SEARCH_TERMS constant
+const BLOCK_SEARCH_TERMS = configs.BLOCK_SEARCH_TERMS;
+const objectOfVerification = {};
+for (let i = 0; i < BLOCK_SEARCH_TERMS.length; i++) {
+  objectOfVerification[BLOCK_SEARCH_TERMS[i]] = 0;
+}
+
 // thanks to https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
 function b64EncodeUnicode(str) {
   // first we use encodeURIComponent to get percent-encoded UTF-8, then we convert the percent-encodings
@@ -337,6 +344,16 @@ export default class Project extends EventEmitter {
     return proxiedUrlFor(url);
   }
 
+  // initializing searchTermFilteringBlacklist service
+  searchTermFilteringBlacklist(value) {
+    const wordsArray = value.split(" ");
+    let okBlacklist = false;
+    for (let i = 0; i < wordsArray.length; i++) {
+      if (wordsArray[i].trim() in objectOfVerification) okBlacklist = true;
+    }
+    return okBlacklist;
+  }
+
   async searchMedia(source, params, cursor, signal) {
     const url = new URL(`http://${XRCHAT_SERVER}/media/search`);
 
@@ -359,7 +376,9 @@ export default class Project extends EventEmitter {
     }
 
     if (params.query) {
-      searchParams.set("q", params.query);
+      //checking BLOCK_SEARCH_TERMS
+      if (this.searchTermFilteringBlacklist(params.query)) false;
+      else searchParams.set("q", params.query);
     }
 
     if (params.filter) {
