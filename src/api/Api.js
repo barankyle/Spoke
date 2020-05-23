@@ -887,7 +887,7 @@ export default class Project extends EventEmitter {
           content: publishParams.contentAttributions
         }
       };
-
+      s
       const token = this.getToken();
 
       const headers = {
@@ -896,7 +896,7 @@ export default class Project extends EventEmitter {
       };
       const body = JSON.stringify({ scene: sceneParams });
 
-      const resp = await this.fetch(`https://${API_SERVER}/projects/${project.project_id}/publish`, {
+      const resp = await this.fetch(`https://${API_SERVER}/api/v1/projects/${project.project_id}/publish`, {
         method: "POST",
         headers,
         body
