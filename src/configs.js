@@ -14,7 +14,7 @@ const get = (configs, key, defaultValue) => {
 
 get(configs, "HUBS_SERVER", process.env.HUBS_SERVER);
 get(configs, "RETICULUM_SERVER", process.env.RETICULUM_SERVER);
-get(configs, "XRCHAT_SERVER", process.env.XRCHAT_SERVER);
+get(configs, "API_SERVER", process.env.API_SERVER);
 get(configs, "THUMBNAIL_SERVER", process.env.THUMBNAIL_SERVER);
 get(configs, "CORS_PROXY_SERVER", process.env.CORS_PROXY_SERVER);
 get(configs, "NON_CORS_PROXY_DOMAINS", process.env.NON_CORS_PROXY_DOMAINS);
