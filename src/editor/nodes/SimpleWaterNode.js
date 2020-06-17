@@ -1,9 +1,5 @@
 import EditorNodeMixin from "./EditorNodeMixin";
 import SimpleWater from "../objects/SimpleWater";
-<<<<<<< Updated upstream
-=======
-// import waterNormalsUrl from "three/examples/textures/waternormals.jpg";
->>>>>>> Stashed changes
 import loadTexture from "../utils/loadTexture";
 import { Texture } from "three";
 
@@ -45,11 +41,7 @@ export default class SimpleWaterNode extends EditorNodeMixin(SimpleWater) {
   }
 
   static async load() {
-<<<<<<< Updated upstream
     //waterNormalMap = await loadTexture(waterNormalsUrl);
-=======
-    // waterNormalMap = await loadTexture(waterNormalsUrl);
->>>>>>> Stashed changes
   }
 
   constructor(editor) {
