@@ -1,6 +1,6 @@
 pkg_name=spoke
-pkg_origin=xrchat
-pkg_maintainer="XRChat <hello@xrchat.social>"
+pkg_origin=xr3ngine
+pkg_maintainer="XR3ngine <hello@xr3ngine.io>"
 
 pkg_version="1.0.0"
 pkg_license=('MPLv2')
@@ -16,7 +16,8 @@ pkg_build_deps=(
 )
 
 pkg_deps=(
-    core/aws-cli/1.16.118/20190305224525 # AWS cli used for run hook when uploading to S3
+    core/aws-cli # AWS cli used for run hook when uploading to S3
+    core/nginx
 )
 
 do_build() {

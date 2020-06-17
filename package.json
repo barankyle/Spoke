@@ -1,21 +1,15 @@
 {
-  "name": "spoke",
-  "private": true,
-  "productName": "Spoke",
+  "name": "xr3-spoke",
+  "productName": "xr3-spoke",
   "license": "MPL-2.0",
-  "version": "0.8.6",
+  "version": "0.0.5",
   "engines": {
     "node": ">=10"
   },
   "main": "lib/server/index.js",
-  "files": [
-    "lib/",
-    "dist/",
-    "LICENSE"
-  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/mozilla/Spoke.git"
+    "url": "https://github.com/xr3ngine/Spoke.git"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --mode development",
@@ -106,9 +100,7 @@
     "url-toolkit": "^2.1.6",
     "use-debounce": "^3.4.0",
     "use-http": "^0.2.4",
-    "uuid": "^3.3.3"
-  },
-  "devDependencies": {
+    "uuid": "^3.3.3",
     "@babel/cli": "^7.6.0",
     "@babel/core": "^7.6.0",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
@@ -163,5 +155,7 @@
     "webpack-cli": "^3.3.8",
     "webpack-dev-server": "^3.8.0",
     "worker-loader": "^2.0.0"
+  },
+  "devDependencies": {
   }
 }
