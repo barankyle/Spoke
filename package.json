@@ -2,7 +2,7 @@
   "name": "xr3-spoke",
   "productName": "xr3-spoke",
   "license": "MPL-2.0",
-  "version": "0.8.18",
+  "version": "0.8.20",
   "engines": {
     "node": ">=10"
   },
@@ -147,7 +147,7 @@
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-processor-styled-components": "^1.8.0",
     "terser-webpack-plugin": "^2.0.1",
-    "three": "github:MozillaReality/three.js",
+    "three": "github:shawticus/three.js",
     "three-mesh-bvh": "^0.1.4",
     "url-toolkit": "^2.1.6",
     "use-debounce": "^3.4.0",
