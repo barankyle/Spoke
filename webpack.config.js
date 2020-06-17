@@ -45,10 +45,6 @@ function createHTTPSConfig() {
               {
                 type: 2,
                 value: "localhost"
-              },
-              {
-                type: 2,
-                value: "hubs.local"
               }
             ]
           }
@@ -67,7 +63,7 @@ function createHTTPSConfig() {
   }
 }
 
-const defaultHostName = "hubs.local";
+const defaultHostName = "localhost";
 const host = process.env.HOST_IP || defaultHostName;
 const port = process.env.HOST_PORT || 9090;
 
@@ -251,13 +247,28 @@ module.exports = env => {
         template: path.join(__dirname, "src", "index.html"),
         faviconPath: (process.env.BASE_ASSETS_PATH || "/") + "assets/images/favicon.ico"
       }),
+      new webpack.DefinePlugin({
+        "process.env": JSON.stringify(dotenv.config().parsed)
+      }),
       new webpack.EnvironmentPlugin({
         BUILD_VERSION: "dev",
         NODE_ENV: "development",
-        RETICULUM_SERVER: undefined,
-        API_SERVER: undefined,
+        API_SERVER_ADDRESS: undefined,
+        API_ASSETS_ROUTE: "",
+        API_ASSETS_ACTION: "",
+        API_MEDIA_ROUTE: "",
+        API_MEDIA_SEARCH_ROUTE: "",
+        API_META_ROUTE: "",
+        API_PROJECTS_ROUTE: "",
+        API_PROJECT_PUBLISH_ACTION: "",
+        API_SCENES_ROUTE: "",
+        API_SOCKET_ENDPOINT: "",
         THUMBNAIL_SERVER: "",
-        HUBS_SERVER: undefined,
+        THUMBNAIL_ROUTE: "",
+        CLIENT_SCENE_ROUTE: "",
+        CLIENT_LOCAL_SCENE_ROUTE: "",
+        USE_DIRECT_UPLOAD_API: true,
+        CLIENT_ADDRESS: undefined,
         CORS_PROXY_SERVER: null,
         BASE_ASSETS_PATH: "",
         NON_CORS_PROXY_DOMAINS: "",
@@ -265,6 +276,7 @@ module.exports = env => {
         SENTRY_DSN: null,
         GA_TRACKING_ID: null,
         IS_MOZ: false,
+        USE_HTTPS: true,
         GITHUB_ORG: "mozilla",
         GITHUB_REPO: "spoke",
         GITHUB_PUBLIC_TOKEN: "de8cbfb4cc0281c7b731c891df431016c29b0ace"

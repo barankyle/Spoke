@@ -1,6 +1,5 @@
 import EditorNodeMixin from "./EditorNodeMixin";
 import SimpleWater from "../objects/SimpleWater";
-import waterNormalsUrl from "three/examples/textures/waternormals.jpg";
 import loadTexture from "../utils/loadTexture";
 import { Texture } from "three";
 
@@ -42,7 +41,7 @@ export default class SimpleWaterNode extends EditorNodeMixin(SimpleWater) {
   }
 
   static async load() {
-    waterNormalMap = await loadTexture(waterNormalsUrl);
+    //waterNormalMap = await loadTexture(waterNormalsUrl);
   }
 
   constructor(editor) {
@@ -94,5 +93,9 @@ export default class SimpleWaterNode extends EditorNodeMixin(SimpleWater) {
       ripplesScale: this.ripplesScale
     });
     this.replaceObject();
+  }
+
+  getRuntimeResourcesForStats() {
+    return { meshes: [this], materials: [this.material], textures: [waterNormalMap] };
   }
 }
