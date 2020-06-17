@@ -1,9 +1,10 @@
 import EditorNodeMixin from "./EditorNodeMixin";
 import SimpleWater from "../objects/SimpleWater";
+import waterNormalsUrl from "../../assets/waternormals.jpg";
 import loadTexture from "../utils/loadTexture";
 import { Texture } from "three";
 
-// let waterNormalMap = null;
+let waterNormalMap = null;
 
 export default class SimpleWaterNode extends EditorNodeMixin(SimpleWater) {
   static legacyComponentName = "simple-water";
@@ -41,14 +42,16 @@ export default class SimpleWaterNode extends EditorNodeMixin(SimpleWater) {
   }
 
   static async load() {
-    //waterNormalMap = await loadTexture(waterNormalsUrl);
+    waterNormalMap = await loadTexture(waterNormalsUrl);
   }
 
   constructor(editor) {
-    // if (!waterNormalMap) {
-    //   console.warn("SimpleWaterNode: water normal map was not loaded before creating a new SimpleWaterNode");
-    // }
-    super(editor, new Texture());
+    if (!waterNormalMap) {
+      console.warn("SimpleWaterNode: water normal map was not loaded before creating a new SimpleWaterNode");
+    }
+
+    super(editor, waterNormalMap || new Texture());
+
     if (editor.scene) {
       this.material.envMap = editor.scene.environmentMap;
       this.material.needsUpdate = true;
@@ -94,6 +97,6 @@ export default class SimpleWaterNode extends EditorNodeMixin(SimpleWater) {
   }
 
   getRuntimeResourcesForStats() {
-    return { meshes: [this], materials: [this.material], textures: [new Texture()] };
+    return { meshes: [this], materials: [this.material], textures: [waterNormalMap] };
   }
 }
