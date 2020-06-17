@@ -42,13 +42,8 @@ hab svc stop $PKG
 cat > build-config.toml << EOTOML
 [general]
 base_assets_path = $BASE_ASSETS_PATH
-<<<<<<< Updated upstream
 hubs_server = $CLIENT_ADDRESS
 reticulum_server = $API_SERVER_ADDRESS
-=======
-CLIENT_SERVER = $CLIENT_SERVER
-API_SERVER = $API_SERVER
->>>>>>> Stashed changes
 thumbnail_server = $THUMBNAIL_SERVER
 cors_proxy_server = $CORS_PROXY_SERVER
 non_cors_proxy_domains = $NON_CORS_PROXY_DOMAINS

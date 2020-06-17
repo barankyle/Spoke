@@ -12,17 +12,12 @@ import { buildAbsoluteURL } from "url-toolkit";
 import PublishedSceneDialog from "./PublishedSceneDialog";
 import { matchesFileTypes, AudioFileTypes } from "../ui/assets/fileTypes";
 import { RethrownError } from "../editor/utils/errors";
-<<<<<<< Updated upstream
 import { searchTermsExistInBlacklist } from "./BlockSearchTerms.js";
-=======
-import searchTermFilteringBlacklist from "./util/BlockSearchTerms.js";
->>>>>>> Stashed changes
 
 // Media related functions should be kept up to date with Hubs media-utils:
 // ${prefix}github.com/mozilla/hubs/blob/master/src/utils/media-utils.js
 
 const resolveUrlCache = new Map();
-<<<<<<< Updated upstream
 const API_SERVER = configs.API_SERVER || document.location.hostname;
 
 //initializing BLOCK_SEARCH_TERMS constant
@@ -31,29 +26,6 @@ const objectOfVerification = {};
 for (let i = 0; i < BLOCK_SEARCH_TERMS.length; i++) {
   objectOfVerification[BLOCK_SEARCH_TERMS[i]] = 0;
 }
-=======
-const resolveMediaCache = new Map();
-
-const { API_SERVER } = configs || document.location.hostname;
-
-const {
-  API_ASSETS_ROUTE,
-  API_ASSETS_ACTION,
-  API_SCENE_ROUTE,
-  API_PROJECT_ROUTE,
-  API_MEDIA_ROUTE,
-  API_MEDIA_SEARCH_ROUTE,
-  API_PROJECT_PUBLISH_ACTION,
-  API_META_ROUTE,
-  API_SOCKET_ENDPOINT,
-  CLIENT_SERVER,
-  CLIENT_SCENE_ROUTE,
-  USE_DIRECT_UPLOAD_API,
-  CORS_PROXY_SERVER,
-  THUMBNAIL_SERVER,
-  THUMBNAIL_ROUTE
-} = configs;
->>>>>>> Stashed changes
 
 // thanks to https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
 
@@ -126,7 +98,6 @@ export const proxiedUrlFor = url => {
     return url;
   }
 
-<<<<<<< Updated upstream
   return `${prefix}${CORS_PROXY_SERVER}/${url}`;
 };
 
@@ -136,17 +107,6 @@ export const scaledThumbnailUrlFor = (url, width, height) => {
   }
 
   return `${prefix}${THUMBNAIL_SERVER}${THUMBNAIL_ROUTE}${farsparkEncodeUrl(url)}?w=${width}&h=${height}`;
-=======
-  return `https://${CORS_PROXY_SERVER}/${url}`;
-};
-
-export const scaledThumbnailUrlFor = (url, width, height) => {
-  if (configs.API_SERVER.includes("hubs.local") && url.includes("hubs.local")) {
-    return url;
-  }
-
-  return `https://${THUMBNAIL_SERVER}${THUMBNAIL_ROUTE}${farsparkEncodeUrl(url)}?w=${width}&h=${height}`;
->>>>>>> Stashed changes
 };
 
 const CommonKnownContentTypes = {
@@ -174,11 +134,7 @@ export default class Project extends EventEmitter {
     const { protocol, host } = new URL(window.location.href);
 
     this.serverURL = protocol + "//" + host;
-<<<<<<< Updated upstream
     this.apiURL = `${prefix}${API_SERVER_ADDRESS}`;
-=======
-    this.apiURL = `https://${API_SERVER}`;
->>>>>>> Stashed changes
 
     this.projectDirectoryPath = "/api/files/";
 
@@ -194,12 +150,8 @@ export default class Project extends EventEmitter {
   }
 
   async authenticate(email, signal) {
-<<<<<<< Updated upstream
     const reticulumServer = API_SERVER_ADDRESS;
     const socketUrl = `wss://${reticulumServer}${API_SOCKET_ENDPOINT}`;
-=======
-    const socketUrl = `wss://${API_SERVER}${API_SOCKET_ENDPOINT}`;
->>>>>>> Stashed changes
     const socket = new Socket(socketUrl, { params: { session_id: uuid() } });
     socket.connect();
 
@@ -291,13 +243,9 @@ export default class Project extends EventEmitter {
       authorization: `Bearer ${token}`
     };
 
-<<<<<<< Updated upstream
     const response = await this.fetch(`${prefix}${API_SERVER_ADDRESS}${API_PROJECTS_ROUTE}`, { headers });
 
     console.log("Response: " + Object.values(response));
-=======
-    const response = await this.fetch(`http://${API_SERVER}${API_PROJECT_ROUTE}`, { headers });
->>>>>>> Stashed changes
 
     const json = await response.json();
 
@@ -316,11 +264,7 @@ export default class Project extends EventEmitter {
       authorization: `Bearer ${token}`
     };
 
-<<<<<<< Updated upstream
     const response = await this.fetch(`${prefix}${API_SERVER_ADDRESS}${API_PROJECTS_ROUTE}/${projectId}`, {
-=======
-    const response = await this.fetch(`http://${API_SERVER}${API_PROJECT_ROUTE}/${projectId}`, {
->>>>>>> Stashed changes
       headers
     });
 
@@ -338,11 +282,7 @@ export default class Project extends EventEmitter {
     const cacheKey = `${url}|${index}`;
     if (resolveUrlCache.has(cacheKey)) return resolveUrlCache.get(cacheKey);
 
-<<<<<<< Updated upstream
     const request = this.fetch(`${prefix}${API_SERVER_ADDRESS}${API_MEDIA_ROUTE}`, {
-=======
-    const request = this.fetch(`https://${API_SERVER}${API_MEDIA_ROUTE}`, {
->>>>>>> Stashed changes
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ media: { url, index } })
@@ -438,13 +378,8 @@ export default class Project extends EventEmitter {
   }
 
   unproxyUrl(baseUrl, url) {
-<<<<<<< Updated upstream
     if (CORS_PROXY_SERVER) {
       const corsProxyPrefix = `${prefix}${CORS_PROXY_SERVER}/`;
-=======
-    if (configs.CORS_PROXY_SERVER) {
-      const corsProxyPrefix = `https://${CORS_PROXY_SERVER}/`;
->>>>>>> Stashed changes
 
       if (baseUrl.startsWith(corsProxyPrefix)) {
         baseUrl = baseUrl.substring(corsProxyPrefix.length);
@@ -465,7 +400,6 @@ export default class Project extends EventEmitter {
   }
 
   async searchMedia(source, params, cursor, signal) {
-<<<<<<< Updated upstream
 
     if (searchTermsExistInBlacklist(params.query)) {
       // If search params contain a blacklisted word, return nothing
@@ -473,14 +407,6 @@ export default class Project extends EventEmitter {
     }
 
     const url = new URL(`${prefix}${API_SERVER_ADDRESS}${API_MEDIA_ROUTE}${API_MEDIA_SEARCH_ROUTE}`);
-=======
-    const url = new URL(`http://${API_SERVER}${API_MEDIA_ROUTE}/${API_MEDIA_SEARCH_ROUTE}`);
-
-    // If search params contain a blacklisted word, return nothing
-    if (searchTermFilteringBlacklist(params.query)) {
-      return { results: {}, suggestions: {}, nextCursor: null };
-    }
->>>>>>> Stashed changes
 
     const headers = {
       "content-type": "application/json"
@@ -609,11 +535,7 @@ export default class Project extends EventEmitter {
 
     const body = JSON.stringify({ project });
 
-<<<<<<< Updated upstream
     const projectEndpoint = `${prefix}${API_SERVER_ADDRESS}${API_PROJECTS_ROUTE}`;
-=======
-    const projectEndpoint = `http://${API_SERVER}/${API_PROJECT_ROUTE}`;
->>>>>>> Stashed changes
 
     const resp = await this.fetch(projectEndpoint, { method: "POST", headers, body, signal });
     console.log("Response: " + Object.values(resp));
@@ -663,11 +585,7 @@ export default class Project extends EventEmitter {
       authorization: `Bearer ${token}`
     };
 
-<<<<<<< Updated upstream
     const projectEndpoint = `${prefix}${API_SERVER_ADDRESS}${API_PROJECTS_ROUTE}/${projectId}`;
-=======
-    const projectEndpoint = `https://${API_SERVER}${API_PROJECT_ROUTE}/${projectId}`;
->>>>>>> Stashed changes
 
     const resp = await this.fetch(projectEndpoint, { method: "DELETE", headers });
     console.log("Response: " + Object.values(resp));
@@ -750,11 +668,7 @@ export default class Project extends EventEmitter {
       project
     });
 
-<<<<<<< Updated upstream
     const projectEndpoint = `${prefix}${API_SERVER_ADDRESS}${API_PROJECTS_ROUTE}/${projectId}`;
-=======
-    const projectEndpoint = `http://${API_SERVER}${API_PROJECT_ROUTE}/${projectId}`;
->>>>>>> Stashed changes
 
     const resp = await this.fetch(projectEndpoint, { method: "PATCH", headers, body, signal });
     console.log("Response: " + Object.values(resp));
@@ -794,11 +708,7 @@ export default class Project extends EventEmitter {
       "content-type": "application/json"
     };
 
-<<<<<<< Updated upstream
     const response = await this.fetch(`${prefix}${API_SERVER_ADDRESS}${API_SCENES_ROUTE}/${sceneId}`, {
-=======
-    const response = await this.fetch(`https://${API_SERVER}${API_SCENE_ROUTE}${sceneId}`, {
->>>>>>> Stashed changes
       headers
     });
 
@@ -810,18 +720,11 @@ export default class Project extends EventEmitter {
   }
 
   getSceneUrl(sceneId) {
-<<<<<<< Updated upstream
     // If we recognize a local address relative to this Spoke instance
     if (CLIENT_ADDRESS === "localhost:8080") {
       return `${prefix}${CLIENT_ADDRESS}${CLIENT_LOCAL_SCENE_ROUTE}${sceneId}`;
     } else {
       return `${prefix}${CLIENT_ADDRESS}${CLIENT_SCENE_ROUTE}${sceneId}`;
-=======
-    if (configs.CLIENT_SERVER === "localhost:8080" || configs.CLIENT_SERVER === "hubs.local:8080") {
-      return `https://${CLIENT_SERVER}${CLIENT_SCENE_ROUTE}${sceneId}`;
-    } else {
-      return `https://${CLIENT_SERVER}${CLIENT_SCENE_ROUTE}${sceneId}`;
->>>>>>> Stashed changes
     }
   }
 
@@ -1065,25 +968,17 @@ export default class Project extends EventEmitter {
       };
       const body = JSON.stringify({ scene: sceneParams });
 
-<<<<<<< Updated upstream
 
       const resp = await this.fetch(
         `${prefix}${API_SERVER_ADDRESS}${API_PROJECTS_ROUTE}/${project.project_id}${API_PROJECT_PUBLISH_ACTION}`,
-=======
-      const resp = await this.fetch(
-        `http://${API_SERVER}${API_PROJECT_ROUTE}/${project.project_id}/${API_PROJECT_PUBLISH_ACTION}`,
->>>>>>> Stashed changes
         {
           method: "POST",
           headers,
           body
         }
       );
-<<<<<<< Updated upstream
 
       console.log("Response: " + Object.values(resp));
-=======
->>>>>>> Stashed changes
 
       if (signal.aborted) {
         const error = new Error("Publish project aborted");
@@ -1131,7 +1026,6 @@ export default class Project extends EventEmitter {
   }
 
   async upload(blob, onUploadProgress, signal) {
-<<<<<<< Updated upstream
 
     // Use direct upload API, see: ${prefix}github.com/mozilla/reticulum/pull/319
     let host, port;
@@ -1141,14 +1035,6 @@ export default class Project extends EventEmitter {
         await this.fetch(`${prefix}${API_SERVER_ADDRESS}${API_META_ROUTE}`)
       ).json();
       const uploadPort = new URL(`${prefix}${API_SERVER_ADDRESS}`).port;
-=======
-    // Use direct upload API, see: https://github.com/mozilla/reticulum/pull/319
-    let host, port;
-
-    if (USE_DIRECT_UPLOAD_API) {
-      const { phx_host: uploadHost } = await (await this.fetch(`https://${API_SERVER}${API_META_ROUTE}`)).json();
-      const uploadPort = new URL(`https://${API_SERVER}`).port;
->>>>>>> Stashed changes
       host = uploadHost;
       port = uploadPort;
     }
@@ -1168,17 +1054,10 @@ export default class Project extends EventEmitter {
       }
 
       if (USE_DIRECT_UPLOAD_API) {
-<<<<<<< Updated upstream
         request.open("post", `${prefix}${host}:${port}${API_MEDIA_ROUTE}`, true);
       } else {
         request.open("post", `http://${API_SERVER_ADDRESS}${API_MEDIA_ROUTE}`, true);
       }
-=======
-        request.open("post", `https://${host}:${port}${API_MEDIA_ROUTE}`, true);
-      }
-
-      request.open("post", `http://${API_SERVER}${API_MEDIA_ROUTE}`, true);
->>>>>>> Stashed changes
 
       request.upload.addEventListener("progress", e => {
         if (onUploadProgress) {
@@ -1214,11 +1093,7 @@ export default class Project extends EventEmitter {
   }
 
   uploadAssets(editor, files, onProgress, signal) {
-<<<<<<< Updated upstream
     return this._uploadAssets(`${prefix}${API_SERVER_ADDRESS}${API_ASSETS_ROUTE}`, editor, files, onProgress, signal);
-=======
-    return this._uploadAssets(`https://${API_SERVER}${API_ASSETS_ROUTE}`, editor, files, onProgress, signal);
->>>>>>> Stashed changes
   }
 
   async _uploadAssets(endpoint, editor, files, onProgress, signal) {
@@ -1253,20 +1128,12 @@ export default class Project extends EventEmitter {
   }
 
   uploadAsset(editor, file, onProgress, signal) {
-<<<<<<< Updated upstream
     return this._uploadAsset(`${prefix}${API_SERVER_ADDRESS}${API_ASSETS_ROUTE}`, editor, file, onProgress, signal);
-=======
-    return this._uploadAsset(`https://${API_SERVER}${API_ASSETS_ROUTE}}`, editor, file, onProgress, signal);
->>>>>>> Stashed changes
   }
 
   uploadProjectAsset(editor, projectId, file, onProgress, signal) {
     return this._uploadAsset(
-<<<<<<< Updated upstream
       `${prefix}${API_SERVER_ADDRESS}${API_PROJECTS_ROUTE}/${projectId}${API_ASSETS_ACTION}`,
-=======
-      `https://${API_SERVER}/${API_PROJECT_ROUTE}/${projectId}/${API_ASSETS_ACTION}`,
->>>>>>> Stashed changes
       editor,
       file,
       onProgress,
@@ -1346,11 +1213,7 @@ export default class Project extends EventEmitter {
       authorization: `Bearer ${token}`
     };
 
-<<<<<<< Updated upstream
     const assetEndpoint = `${prefix}${API_SERVER_ADDRESS}${API_ASSETS_ROUTE}/${assetId}`;
-=======
-    const assetEndpoint = `https://${API_SERVER}${API_ASSETS_ROUTE}/${assetId}`;
->>>>>>> Stashed changes
 
     const resp = await this.fetch(assetEndpoint, { method: "DELETE", headers });
     console.log("Response: " + Object.values(resp));
@@ -1374,11 +1237,7 @@ export default class Project extends EventEmitter {
       authorization: `Bearer ${token}`
     };
 
-<<<<<<< Updated upstream
     const projectAssetEndpoint = `${prefix}${API_SERVER_ADDRESS}${API_PROJECTS_ROUTE}/${projectId}${API_ASSETS_ACTION}/${assetId}`;
-=======
-    const projectAssetEndpoint = `https://${API_SERVER}${API_PROJECT_ROUTE}/${projectId}/${API_ASSETS_ACTION}/${assetId}`;
->>>>>>> Stashed changes
 
     const resp = await this.fetch(projectAssetEndpoint, { method: "DELETE", headers });
     console.log("Response: " + Object.values(resp));

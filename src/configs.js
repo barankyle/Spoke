@@ -13,7 +13,6 @@ const get = (configs, key, defaultValue) => {
   }
 };
 
-<<<<<<< Updated upstream
 get(configs, "API_ASSETS_ROUTE", process.env.API_ASSETS_ROUTE);
 get(configs, "API_MEDIA_ROUTE", process.env.API_MEDIA_ROUTE);
 get(configs, "API_MEDIA_SEARCH_ROUTE", process.env.API_MEDIA_SEARCH_ROUTE);
@@ -26,15 +25,9 @@ get(configs, "API_SERVER_ADDRESS", process.env.API_SERVER_ADDRESS);
 get(configs, "API_SOCKET_ENDPOINT", process.env.API_SOCKET_ENDPOINT);
 get(configs, "BASE_ASSETS_PATH", process.env.BASE_ASSETS_PATH);
 get(configs, "CLIENT_ADDRESS", process.env.CLIENT_ADDRESS);
-=======
-get(configs, "CLIENT_SERVER", process.env.CLIENT_SERVER);
-get(configs, "API_SERVER", process.env.API_SERVER);
-get(configs, "THUMBNAIL_SERVER", process.env.THUMBNAIL_SERVER);
->>>>>>> Stashed changes
 get(configs, "CORS_PROXY_SERVER", process.env.CORS_PROXY_SERVER);
 get(configs, "GA_TRACKING_ID", process.env.GA_TRACKING_ID);
 get(configs, "IS_MOZ", process.env.IS_MOZ);
-<<<<<<< Updated upstream
 get(configs, "BLOCK_SEARCH_TERMS", require("./block_search_terms.js"));
 get(configs, "NON_CORS_PROXY_DOMAINS", process.env.NON_CORS_PROXY_DOMAINS);
 get(configs, "SENTRY_DSN", process.env.SENTRY_DSN);
@@ -42,8 +35,6 @@ get(configs, "THUMBNAIL_ROUTE", process.env.THUMBNAIL_ROUTE);
 get(configs, "THUMBNAIL_SERVER", process.env.THUMBNAIL_SERVER);
 get(configs, "USE_DIRECT_UPLOAD_API", process.env.USE_DIRECT_UPLOAD_API);
 get(configs, "USE_HTTPS", process.env.USE_HTTPS);
-=======
->>>>>>> Stashed changes
 
 if (configs.BASE_ASSETS_PATH) {
   // eslint-disable-next-line no-undef
