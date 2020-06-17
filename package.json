@@ -2,7 +2,7 @@
   "name": "xr3-spoke",
   "productName": "xr3-spoke",
   "license": "MPL-2.0",
-  "version": "0.0.812",
+  "version": "0.8.12",
   "engines": {
     "node": ">=10"
   },
