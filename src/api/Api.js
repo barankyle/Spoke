@@ -18,17 +18,6 @@ import { searchTermsExistInBlacklist } from "./BlockSearchTerms.js";
 // ${prefix}github.com/mozilla/hubs/blob/master/src/utils/media-utils.js
 
 const resolveUrlCache = new Map();
-const API_SERVER = configs.API_SERVER || document.location.hostname;
-
-//initializing BLOCK_SEARCH_TERMS constant
-const BLOCK_SEARCH_TERMS = configs.BLOCK_SEARCH_TERMS;
-const objectOfVerification = {};
-for (let i = 0; i < BLOCK_SEARCH_TERMS.length; i++) {
-  objectOfVerification[BLOCK_SEARCH_TERMS[i]] = 0;
-}
-
-// thanks to https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
-
 const resolveMediaCache = new Map();
 
 const API_SERVER_ADDRESS = configs.API_SERVER_ADDRESS || document.location.hostname;
@@ -41,6 +30,7 @@ const {
   API_META_ROUTE,
   API_PROJECT_PUBLISH_ACTION,
   API_PROJECTS_ROUTE,
+  API_RESOLVE_MEDIA_ROUTE,
   API_SCENES_ROUTE,
   API_SOCKET_ENDPOINT,
   CLIENT_ADDRESS,
@@ -57,7 +47,6 @@ const {
 const prefix = USE_HTTPS === "true" ? "https://" : "http://";
 
 // thanks to developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
-
 function b64EncodeUnicode(str) {
   // first we use encodeURIComponent to get percent-encoded UTF-8, then we convert the percent-encodings
   // into raw bytes which can be fed into btoa.
@@ -282,7 +271,7 @@ export default class Project extends EventEmitter {
     const cacheKey = `${url}|${index}`;
     if (resolveUrlCache.has(cacheKey)) return resolveUrlCache.get(cacheKey);
 
-    const request = this.fetch(`${prefix}${API_SERVER_ADDRESS}${API_MEDIA_ROUTE}`, {
+    const request = this.fetch(`${prefix}${API_SERVER_ADDRESS}${API_RESOLVE_MEDIA_ROUTE}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ media: { url, index } })
@@ -398,9 +387,8 @@ export default class Project extends EventEmitter {
 
     return proxiedUrlFor(url);
   }
-
+  
   async searchMedia(source, params, cursor, signal) {
-
     if (searchTermsExistInBlacklist(params.query)) {
       // If search params contain a blacklisted word, return nothing
       return { results: {}, suggestions: {}, nextCursor: null };
@@ -427,7 +415,9 @@ export default class Project extends EventEmitter {
     }
 
     if (params.query) {
-      searchParams.set("q", params.query);
+      //checking BLOCK_SEARCH_TERMS
+      if (this.searchTermFilteringBlacklist(params.query)) false;
+      else searchParams.set("q", params.query);
     }
 
     if (params.filter) {
@@ -703,6 +693,13 @@ export default class Project extends EventEmitter {
     return json;
   }
 
+  async getProjectFile(sceneId) {
+    return await this.props.api.getScene(sceneId);
+    // TODO: Make this a main branch thing
+    // const scene = await this.props.api.getScene(sceneId);
+    // return await this.props.api.fetch(scene.scene_project_url).then(response => response.json());
+  }
+
   async getScene(sceneId) {
     const headers = {
       "content-type": "application/json"
@@ -959,7 +956,7 @@ export default class Project extends EventEmitter {
           content: publishParams.contentAttributions
         }
       };
-      s
+    
       const token = this.getToken();
 
       const headers = {
@@ -967,7 +964,6 @@ export default class Project extends EventEmitter {
         authorization: `Bearer ${token}`
       };
       const body = JSON.stringify({ scene: sceneParams });
-
 
       const resp = await this.fetch(
         `${prefix}${API_SERVER_ADDRESS}${API_PROJECTS_ROUTE}/${project.project_id}${API_PROJECT_PUBLISH_ACTION}`,
@@ -1026,7 +1022,6 @@ export default class Project extends EventEmitter {
   }
 
   async upload(blob, onUploadProgress, signal) {
-
     // Use direct upload API, see: ${prefix}github.com/mozilla/reticulum/pull/319
     let host, port;
 
@@ -1284,13 +1279,15 @@ export default class Project extends EventEmitter {
   }
 
   handleAuthorization() {
-    if (!this.isAuthenticated()) {
-      window.location = `${window.location.origin}?redirectTo=spoke&login=true`;
-    } else {
-      const params = new URLSearchParams(document.location.search);
-      const accessToken = params.get("bearer");
-      const email = params.get("email");
+    const params = new URLSearchParams(document.location.search);
+    const accessToken = params.get("bearer");
+    const email = params.get("email");
+   
+    if((accessToken && email) || this.isAuthenticated()){
       this.saveCredentials(email, accessToken);
+    }
+    else {
+      window.location = `${window.location.origin}?redirectTo=spoke&login=true`;
     }
   }
 }

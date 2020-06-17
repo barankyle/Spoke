@@ -94,7 +94,7 @@ module.exports = env => {
     },
 
     output: {
-      filename: "assets/js/[name]-[chunkhash].js",
+      filename: "spoke/assets/js/[name]-[chunkhash].js",
       publicPath: process.env.BASE_ASSETS_PATH || "/"
     },
 
@@ -106,7 +106,7 @@ module.exports = env => {
             loader: "file-loader",
             options: {
               name: "[name]-[hash].[ext]",
-              outputPath: "assets/images"
+              outputPath: "spoke/assets/images"
             }
           }
         },
@@ -116,7 +116,7 @@ module.exports = env => {
             loader: "file-loader",
             options: {
               name: "[name]-[hash].[ext]",
-              outputPath: "assets/fonts"
+              outputPath: "spoke/assets/fonts"
             }
           }
         },
@@ -126,7 +126,7 @@ module.exports = env => {
             loader: "file-loader",
             options: {
               name: "[name]-[hash].[ext]",
-              outputPath: "assets/models"
+              outputPath: "spoke/assets/models"
             }
           }
         },
@@ -136,7 +136,7 @@ module.exports = env => {
             loader: "gltf-webpack-loader",
             options: {
               name: "[name]-[hash].[ext]",
-              outputPath: "assets/models"
+              outputPath: "spoke/assets/models"
             }
           }
         },
@@ -147,7 +147,7 @@ module.exports = env => {
               loader: "file-loader",
               options: {
                 name: "[name]-[hash].[ext]",
-                outputPath: "assets/models"
+                outputPath: "spoke/assets/models"
               }
             }
           ]
@@ -158,7 +158,7 @@ module.exports = env => {
             loader: "file-loader",
             options: {
               name: "[name]-[hash].[ext]",
-              outputPath: "assets/videos"
+              outputPath: "spoke/assets/videos"
             }
           }
         },
@@ -168,7 +168,7 @@ module.exports = env => {
             loader: "file-loader",
             options: {
               name: "[name]-[hash].[ext]",
-              outputPath: "assets/templates"
+              outputPath: "spoke/assets/templates"
             }
           }
         },
@@ -185,7 +185,7 @@ module.exports = env => {
             // Workers must be inlined because they are hosted on a CDN and CORS doesn't permit us
             // from loading worker scripts from another origin. To minimize bundle size, dynamically
             // import a wrapper around the worker. See SketchfabZipLoader.js and API.js for an example.
-            name: "assets/js/workers/[name]-[hash].js",
+            name: "spoke/assets/js/workers/[name]-[hash].js",
             inline: true,
             fallback: false
           }
@@ -196,7 +196,7 @@ module.exports = env => {
           use: {
             loader: "file-loader",
             options: {
-              outputPath: "assets/js/wasm",
+              outputPath: "spoke/assets/js/wasm",
               name: "[name]-[hash].[ext]"
             }
           }
@@ -234,18 +234,19 @@ module.exports = env => {
       new CopyWebpackPlugin([
         {
           from: path.join(__dirname, "src", "assets", "favicon-spoke.ico"),
-          to: "assets/images/favicon-spoke.ico"
+          to: "spoke/assets/images/favicon-spoke.ico"
         }
       ]),
       new CopyWebpackPlugin([
         {
           from: path.join(__dirname, "src", "assets", "favicon-editor.ico"),
-          to: "assets/images/favicon-editor.ico"
+          to: "spoke/assets/images/favicon-editor.ico"
         }
       ]),
       new HTMLWebpackPlugin({
         template: path.join(__dirname, "src", "index.html"),
-        faviconPath: (process.env.BASE_ASSETS_PATH || "/") + "assets/images/favicon.ico"
+        faviconPath: (process.env.BASE_ASSETS_PATH || "/") + "spoke/assets/images/favicon.ico",
+        filename: "spoke/index.html"
       }),
       new webpack.DefinePlugin({
         "process.env": JSON.stringify(dotenv.config().parsed)
@@ -277,9 +278,9 @@ module.exports = env => {
         GA_TRACKING_ID: null,
         IS_MOZ: false,
         USE_HTTPS: true,
-        GITHUB_ORG: "mozilla",
+        GITHUB_ORG: "XR3NGINE",
         GITHUB_REPO: "spoke",
-        GITHUB_PUBLIC_TOKEN: "de8cbfb4cc0281c7b731c891df431016c29b0ace"
+        GITHUB_PUBLIC_TOKEN: ""
       })
     ]
   };
