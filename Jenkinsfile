@@ -44,7 +44,7 @@ pipeline {
           def sentryDsn = env.SENTRY_DSN
           def gaTrackingId = env.GA_TRACKING_ID
 
-          def habCommand = "/bin/bash scripts/hab-build-and-push.sh \\\"${baseAssetsPath}\\\" \\\"${hubsServer}\\\" \\\"${reticulumServer}\\\" \\\"${thumbnailServer}\\\" \\\"${corsProxyServer}\\\" \\\"${nonCorsProxyDomains}\\\" \\\"${sentryDsn}\\\" \\\"${gaTrackingId}\\\" \\\"${targetS3Bucket}\\\" \\\"${isMoz}\\\" \\\"${env.BUILD_NUMBER}\\\" \\\"${env.GIT_COMMIT}\\\""
+          def habCommand = "/bin/bash scripts/hab-build-and-push.sh \\\"${baseAssetsPath}\\\" \\\"${clientServer}\\\" \\\"${apiServer}\\\" \\\"${thumbnailServer}\\\" \\\"${corsProxyServer}\\\" \\\"${nonCorsProxyDomains}\\\" \\\"${sentryDsn}\\\" \\\"${gaTrackingId}\\\" \\\"${targetS3Bucket}\\\" \\\"${isMoz}\\\" \\\"${env.BUILD_NUMBER}\\\" \\\"${env.GIT_COMMIT}\\\""
           sh "/usr/bin/script --return -c ${shellString(habCommand)} /dev/null"
 
           def s = $/eval 'ls -rt results/*.hart | head -n 1'/$

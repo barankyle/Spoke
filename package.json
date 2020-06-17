@@ -95,7 +95,7 @@
     "recharts": "^1.8.5",
     "styled-components": "4.4.0",
     "styled-icons": "^8.4.2",
-    "three": "https://github.com/MozillaReality/three.js.git#hubs/master",
+    "three": "^0.116.1",
     "three-mesh-bvh": "^0.1.4",
     "url-toolkit": "^2.1.6",
     "use-debounce": "^3.4.0",

@@ -18,8 +18,8 @@ do
   csplit $f /META_TAGS/ > /dev/null
   cat xx00 > $f
 
-  echo "<meta name=\"env:hubs_server\" content=\"${HUBS_SERVER}\"/>" >> $f
-  echo "<meta name=\"env:reticulum_server\" content=\"${RETICULUM_SERVER}\"/>" >> $f
+  echo "<meta name=\"env:CLIENT_SERVER\" content=\"${CLIENT_SERVER}\"/>" >> $f
+  echo "<meta name=\"env:API_SERVER\" content=\"${API_SERVER}\"/>" >> $f
   echo "<meta name=\"env:cors_proxy_server\" content=\"${CORS_PROXY_SERVER}\"/>" >> $f
   echo "<meta name=\"env:thumbnail_server\" content=\"${THUMBNAIL_SERVER}\"/>" >> $f
   echo "<meta name=\"env:non_cors_proxy_domains\" content=\"${NON_CORS_PROXY_DOMAINS}\"/>" >> $f

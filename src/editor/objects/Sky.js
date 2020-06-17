@@ -10,8 +10,7 @@ import {
   Mesh,
   UniformsLib
 } from "three";
-import { PMREMGenerator } from "three/examples/jsm/pmrem/PMREMGenerator";
-import { PMREMCubeUVPacker } from "three/examples/jsm/pmrem/PMREMCubeUVPacker";
+import { PMREMGenerator } from "three/src/extras/PMREMGenerator";
 
 /**
  * @author zz85 / https://github.com/zz85

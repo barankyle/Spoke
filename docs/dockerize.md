@@ -14,7 +14,7 @@ You can run it using docker, if you don't have node installed or need to test.
 docker build --tag spoke .
 
 # Run the image (deletes itself when you close it)
-docker run -d --rm --name spoke -e "HUBS_SERVER=xrchat.local" -p "8080:80"  spoke
+docker run -d --rm --name spoke -e "CLIENT_SERVER=xrchat.local" -p "8080:80"  spoke
 
 # Stop the server
 docker stop spoke
@@ -24,8 +24,8 @@ docker stop spoke
 
 Enviroment variables:
 - BASE_ASSETS_PATH: [http://xrchat.local/]
-- HUBS_SERVER: [xrchat.local:4000]
-- RETICULUM_SERVER: [xrchat.local:4000]
+- CLIENT_SERVER: [xrchat.local:4000]
+- API_SERVER: [xrchat.local:4000]
 - THUMBNAIL_SERVER: []
 - CORS_PROXY_SERVER: []
 - NON_CORS_PROXY_DOMAINS: []

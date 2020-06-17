@@ -5,8 +5,8 @@ port = 80
 worker_connections = 512
 
 [general]
-hubs_server = "dev.reticulum.io"
-reticulum_server = "dev.reticulum.io"
+CLIENT_SERVER = "dev.reticulum.io"
+API_SERVER = "dev.reticulum.io"
 cors_proxy_server = "cors-proxy-dev.reticulum.io"
 thumbnail_server = "nearspark-dev.reticulum.io"
 non_cors_proxy_domains = "localhost,dev.reticulum.io"
