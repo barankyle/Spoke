@@ -69,7 +69,7 @@
     "@babel/register": "^7.6.0",
     "@babel/runtime": "^7.6.0",
     "@mozillareality/easing-functions": "^0.1.1",
-    "@mozillareality/three-batch-manager": "git+ssh://git@github.com/xr3ngine-archive/three-batch-manager.git",
+    "@mozillareality/three-batch-manager": "git+ssh://git@github.com/barankyle/three-batch-manager.git",
     "@mozillareality/three-particle-emitter": "^0.2.2",
     "@robertlong/gltf-validator": "^2.0.0-dev.3.2",
     "@sentry/browser": "^5.6.3",
